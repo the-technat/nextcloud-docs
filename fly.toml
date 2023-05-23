@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for collabora-server on 2023-05-23T17:19:40+02:00
+# fly.toml app configuration file generated for collabora-server on 2023-05-23T21:54:07+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -10,9 +10,22 @@ primary_region = "cdg"
   image = "collabora/code:latest"
 
 [env]
-  domain = "cloud\\.technat\\.ch"
+	aliasgroup1="https://cloud.technat.ch:443"
+  extra_params="--o:ssl.enable=false" 
+  #server_name="https://collabora-server.fly.dev"
 
-
-[http_service]
+[[services]]
   internal_port = 9980
-  force_https = true
+  protocol = "tcp"
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = "80"
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
