@@ -1,22 +1,26 @@
-# fly.toml app configuration file generated for onlyoffice-docs on 2023-05-29T17:27:07+02:00
+# fly.toml app configuration file generated for collabora-online on 2023-10-03T11:05:23Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "onlyoffice-docs"
+app = "collabora-online"
 primary_region = "cdg"
-kill_timeout = 120
+kill_timeout = "2m0s"
 
 [build]
-  image = "onlyoffice/documentserver:latest"
+  image = "collabora/code:latest"
 
 [deploy]
   strategy = "rolling"
 
 [env]
+  DONT_GEN_SSL_CERT = "1"
+  aliasgroup1 = "cloud\\.technat\\.ch"
+  aliasgroup2 = "nx38267\\.your-storageshare\\.de"
+  extra_params = "--o:ssl.enable=false --o:ssl.termination=false --o:net.post_allow.host[0]=167.235.186.160"
 
 [http_service]
-  internal_port = 80
+  internal_port = 9980
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
