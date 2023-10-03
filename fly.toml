@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for collabora-online on 2023-10-03T11:05:23Z
+# fly.toml app configuration file generated for collabora-online on 2023-10-03T14:56:20Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = "collabora-online"
-primary_region = "cdg"
+primary_region = "ams"
 kill_timeout = "2m0s"
 
 [build]
@@ -17,11 +17,41 @@ kill_timeout = "2m0s"
   DONT_GEN_SSL_CERT = "1"
   aliasgroup1 = "cloud\\.technat\\.ch"
   aliasgroup2 = "nx38267\\.your-storageshare\\.de"
-  extra_params = "--o:ssl.enable=false --o:ssl.termination=false --o:net.post_allow.host[0]=167.235.186.160"
+  aliasgroup3 = "cloud\\.js-buchsi\\.ch"
+  aliasgroup4 = "nx42188\\.your-storageshare\\.de"
+  server_name = "https://collabora-online.fly.dev"
+#  extra_params = '--o:ssl.enable=false --o:ssl.termination=true --o:net.post_allow.host[0]=.+'
+  extra_params = '--o:ssl.enable=false --o:ssl.termination=true'
 
-[http_service]
+
+[[services]]
   internal_port = 9980
-  force_https = true
+  protocol = "tcp"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
+
+
+[checks]
+  [checks.ready]
+    grace_period = "10s"
+    interval = "15s"
+    method = "get"
+    path = "/"
+    port = 9980
+    timeout = "10s"
+    type = "http"
+
+# Prometheus metrics are exposed but need authentication
+# But I don' want to set username/password for the admin interface
+#[metrics]
+#  port = 9980
+#  path = "/cool/getMetrics" 
