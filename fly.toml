@@ -20,7 +20,6 @@ kill_timeout = "2m0s"
   aliasgroup3 = "cloud\\.js-buchsi\\.ch"
   aliasgroup4 = "nx42188\\.your-storageshare\\.de"
   server_name = "https://collabora-online.fly.dev"
-#  extra_params = '--o:ssl.enable=false --o:ssl.termination=true --o:net.post_allow.host[0]=.+'
   extra_params = '--o:ssl.enable=false --o:ssl.termination=true'
 
 
@@ -42,12 +41,12 @@ kill_timeout = "2m0s"
 
 [checks]
   [checks.ready]
-    grace_period = "10s"
-    interval = "15s"
+    grace_period = "50s"
+    interval = "5s"
     method = "get"
     path = "/"
     port = 9980
-    timeout = "10s"
+    timeout = "5s"
     type = "http"
 
 # Prometheus metrics are exposed but need authentication
